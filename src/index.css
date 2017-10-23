@@ -7,3 +7,15 @@ body {
   margin-top: 50px;
   padding-left:30px;
 }
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even){background-color: #FFFF99}

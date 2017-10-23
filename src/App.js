@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import DataDetail from './DataDetail'
 
 
 class App extends Component {
   state = {
-  country:  [
+  data:  [
       {
 		"name": {
 			"common": "India",
@@ -57,14 +58,7 @@ class App extends Component {
   render() {
         return (
       <div className="App">
-      {this.state.country.map((country, index) =>
-        <div  key = { index }>
-        <li>
-        <p>{country.name.common}</p>
-        <p>{country.subregion}</p>
-        <p>{ country.region}</p>
-        </li>
-      </div>)}
+        <DataDetail data = {this.state.data} />
       </div>
     );
   }
