@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Reactable from 'reactable'
+import escapeRegExp from 'escape-string-regexp'
 
 const Table = Reactable.Table,
       Thead = Reactable.Thead,
@@ -8,10 +9,35 @@ const Table = Reactable.Table,
      Td = Reactable.Td;
 
 export default class DataDetail extends Component{
+
+  state ={
+    query:''
+  }
+
+  updateQuery = (query) =>{
+    this.setState({query:query.trim()})
+  }
+
   render(){
     let { data } = this.props;
+    let { query } = this.state;
+    let showingCountry
+
+    if (query) {
+      const match = new RegExp(escapeRegExp(query), 'i')
+      showingCountry = data.filter((country) => match.test(country.name.common))
+      console.log(showingCountry);
+    } else {
+      showingCountry = data
+    }
     return (
  <div>
+ <input
+ placeholder= "search by country name"
+ type="text"
+ value= {this.state.query}
+ onChange= {event => this.updateQuery(event.target.value)}
+ />
  <Table>
   <Thead>
     <Th column="number">#</Th>
@@ -24,7 +50,7 @@ export default class DataDetail extends Component{
     <Th column="Longitude">Longitude</Th>
     </Thead>
     {
-      data.map((data, index) =>
+      showingCountry.map((data, index) =>
        <Tr key={index}>
        <Td column="number">{index + 1}</Td>
        <Td column="Country">{data.name.common}</Td>
