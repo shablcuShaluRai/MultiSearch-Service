@@ -11,32 +11,77 @@ const Table = Reactable.Table,
 export default class DataDetail extends Component{
 
   state ={
-    query:''
+    countrySearch:'',
+    capitalSearch:'',
+    regionSearch: '',
+    currencySearch:''
   }
 
-  updateQuery = (query) =>{
-    this.setState({query:query.trim()})
+  updateCountrySearch = (countrySearch) =>{
+    this.setState({countrySearch:countrySearch.trim()})
+  }
+
+  updateCapitalSearch = (capitalSearch) => {
+    this.setState({capitalSearch:capitalSearch.trim()})
+  }
+
+  updateRegionSearch = (regionSearch) => {
+    this.setState({regionSearch:regionSearch.trim()})
+  }
+
+  updateCurrencySearch = (currencySearch) => {
+    this.setState({currencySearch:currencySearch.trim()})
   }
 
   render(){
-    let { data } = this.props;
-    let { query } = this.state;
+    let {data} = this.props;
+    let { countrySearch, capitalSearch, regionSearch, currencySearch } = this.state;
     let showingCountry
 
-    if (query) {
-      const match = new RegExp(escapeRegExp(query), 'i')
+    if (countrySearch) {
+      console.log("countrySearch", countrySearch);
+      const match = new RegExp(escapeRegExp(countrySearch), 'i')
       showingCountry = data.filter((country) => match.test(country.name.common))
-      console.log(showingCountry);
-    } else {
-      showingCountry = data
-    }
+
+    } else if (capitalSearch) {
+      const match = new RegExp(escapeRegExp(capitalSearch), 'i')
+      showingCountry = data.filter((country) => match.test(country.capital))
+
+    } else if (regionSearch) {
+     const match = new RegExp(escapeRegExp(regionSearch), 'i')
+     showingCountry = data.filter((country) => match.test(country.region))
+     }  else if (currencySearch) {
+      const match = new RegExp(escapeRegExp(currencySearch), 'i')
+      showingCountry = data.filter((country) => match.test(country.currency))
+      } else {
+     showingCountry = data
+   }
     return (
  <div>
  <input
  placeholder= "search by country name"
  type="text"
- value= {this.state.query}
- onChange= {event => this.updateQuery(event.target.value)}
+ value= {this.state.countrySearch}
+ onChange= {event => this.updateCountrySearch(event.target.value)}
+ />
+
+ <input
+ placeholder= "search by capital name"
+ type="text"
+ value= {this.state.capitalSearch}
+ onChange= {event => this.updateCapitalSearch(event.target.value)}
+ />
+ <input
+ placeholder= "search by region name"
+ type="text"
+ value= {this.state.regionSearch}
+ onChange= {event => this.updateRegionSearch(event.target.value)}
+ />
+ <input
+ placeholder= "search by currency"
+ type="text"
+ value= {this.state.currencySearch}
+ onChange= {event => this.updateCurrencySearch(event.target.value)}
  />
  <Table>
   <Thead>
@@ -50,7 +95,7 @@ export default class DataDetail extends Component{
     <Th column="Longitude">Longitude</Th>
     </Thead>
     {
-      showingCountry.map((data, index) =>
+      showingCountry.map((data, index)  =>
        <Tr key={index}>
        <Td column="number">{index + 1}</Td>
        <Td column="Country">{data.name.common}</Td>
