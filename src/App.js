@@ -3,8 +3,7 @@ import DataDetail from './DataDetail'
 import * as DataApi from './utils/api'
 
 
-
-class App extends Component {
+export default class App extends Component {
   state = {
   data: []
     }
@@ -13,15 +12,12 @@ class App extends Component {
   DataApi.fetchData().then(data => this.setState({data}))
  }
 
-
   render() {
         return (
-      <div className="App">
-
-        <DataDetail data = {this.state.data} />
-      </div>
+         <div>
+          <h1 align="center">Country/Capital search</h1>
+          <DataDetail data = {this.state.data} />
+        </div>
     );
   }
 }
-
-export default App;
